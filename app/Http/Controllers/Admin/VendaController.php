@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class VendedorController extends Controller
+use App\Venda;
+
+class VendaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,21 +16,22 @@ class VendedorController extends Controller
      */
     public function index()
     {
-        $COMISSAO = 8.5;
-
-        $data = \App\Vendedor::select('id', 'nome', 'email')->get();
+        $lista = [];
+        $data = Venda::select('id', 'valor', 'created_at', 'vendedor_id')->get();
 
         foreach ($data as $key => $value) {
+            $vendedor = \App\Vendedor::find($value->vendedor_id);
 
-            $search_venda = \App\Venda::find($value->id);
-
-            if($search_venda)
-                $data[$key]['comissao'] = round($search_venda->valor * $COMISSAO / 100, 2);
-            else
-                $data[$key]['comissao'] = 0;
+            $obj = new stdClass;
+            $obj['id'] = $vendedor->id;
+            $obj['nome'] = $vendedor->nome;
+            $obj['email'] = $vendedor->email;
+            $obj['comissao'] = 0;
+            $obj['valor'] = $data[$key]['valor'];
+            $obj['data'] = $data[$key]['created_at'];
         }
-        
-        return view('admin.vendedors.index', compact('data'));
+
+        return view('admin.vendas.index', compact('data'));
     }
 
     /**
@@ -52,15 +55,15 @@ class VendedorController extends Controller
         $data = $request->all();
 
         $validator = \Validator::make($data, [
-            "nome" => "required",
-            "email" => 'required'
+            "vendedor_id" => "required",
+            "valor" => "required"
         ]);
 
         if($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
+            return redirect()->back()->withErros($validator);
         }
 
-        \App\Vendedor::create($data);
+        \App\Venda::create($data);
 
         return redirect()->back();
     }

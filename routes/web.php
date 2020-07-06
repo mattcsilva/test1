@@ -17,9 +17,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Home
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::middleware(['auth'])->prefix('admin')->namespace('Admin')->group(function(){
-    Route::resource('vendedors', 'VendedorController')->only([
-        'index', 'show', 'create'
-    ]);
+    Route::resource('vendedors', 'VendedorController');
+    Route::resource('vendas', 'VendaController');
 });

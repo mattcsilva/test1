@@ -14,20 +14,20 @@
     </button-open-modal-component>
 
     <table-component
-        v-bind:cols="['ID', 'Nome', 'E-mail', 'Comissão']"
+        v-bind:cols="['ID', 'Nome', 'E-mail', 'Comissão', 'Valor venda', 'Data venda']"
         v-bind:items="{{$data}}">
     </table-component>
 
     <modal-component id="adicionar" title="Adicionar">
 
-        <form-component id="formAdicionar" url="{{ route('vendedors.store') }}" token="{{csrf_token()}}">
+        <form-component id="formAdicionar" url="{{ route('vendas.store') }}" token="{{csrf_token()}}">
             <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" class="form-control" id="nome" name="nome" placeholder="Insira o nome...">
+                <label for="vendedor_id">ID Vendedor</label>
+                <input type="text" class="form-control" id="vendedor_id" name="vendedor_id" placeholder="Insira a ID do vendedor...">
             </div>
             <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Insira o e-mail...">
+                <label for="valor">Valor da venda</label>
+                <input type="number" min="0.00" max="10000.00" step="0.01" class="form-control" id="valor" name="valor" placeholder="Inseira um valor...">
             </div>
         </form-component>
 
