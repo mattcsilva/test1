@@ -19,7 +19,7 @@ cd test1
 composer install
 
 # Configurar variáveis de ambiente
-cp .env.example .env
+ren .env.example .env
 php artisan key:generate
 
 # Criar banco de dados
