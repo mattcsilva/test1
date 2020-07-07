@@ -10,10 +10,12 @@
         </div>
     @endif
     
-    <button-open-modal-component
-        target="adicionar"
-        name="Adicionar">
-    </button-open-modal-component>
+    <div class="container pb-3">
+        <button-open-modal-component
+            target="adicionar"
+            name="Adicionar">
+        </button-open-modal-component>
+    </div>
 
     <table-component
         v-bind:cols="['ID', 'Nome', 'E-mail', 'Comissão']"

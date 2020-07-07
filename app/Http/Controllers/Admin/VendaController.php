@@ -16,27 +16,7 @@ class VendaController extends Controller
      */
     public function index()
     {
-        $data = [];
-        $lista = Venda::select('id', 'valor', 'created_at', 'vendedor_id')->get();
-
-        foreach ($lista as $key => $value)
-        {
-            $vendedor = \App\Vendedor::find($value->vendedor_id);
-
-            $obj = new \stdClass;
-            $obj->id = $value->id;
-            $obj->nome = $vendedor->nome;
-            $obj->email = $vendedor->email;
-            $obj->comissao = round($value->valor * app('App\Venda')->getComissao() / 100, 2);
-            $obj->valor = $value->valor;
-            $obj->data = $value->created_at;
-
-            array_push($data, $obj);
-        }
-
-        $data = json_encode($data);
-
-        return view('admin.vendas.index', compact('data'));
+        return view('admin.vendas.index');
     }
 
     /**
@@ -77,7 +57,7 @@ class VendaController extends Controller
             return redirect()->back()->withErrors($validator);
         }
 
-        \App\Venda::create($data);
+        Venda::create($data);
 
         return redirect()->back();
     }
@@ -90,7 +70,7 @@ class VendaController extends Controller
      */
     public function show($id)
     {
-        //
+        // return Venda::where('vendedor_id', $id)->get();
     }
 
     /**

@@ -9,15 +9,10 @@
             @endforeach
         </div>
     @endif
-    
-    <button-open-modal-component
-        target="adicionar"
-        name="Adicionar">
-    </button-open-modal-component>
 
     <table-component
-        v-bind:cols="['ID', 'Nome', 'E-mail', 'Comissão', 'Valor venda', 'Data venda']"
-        v-bind:items="{{$data}}">
+        :cols="['ID', 'Nome', 'E-mail', 'Comissão', 'Valor venda', 'Data venda']"
+        :search="true">
     </table-component>
 
     <modal-component id="adicionar" title="Venda">

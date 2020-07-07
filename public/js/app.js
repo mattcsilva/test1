@@ -1912,8 +1912,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['target', 'name']
 });
@@ -2039,8 +2037,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['cols', 'items']
+  props: ['cols', 'items', 'search'],
+  data: function data() {
+    return {
+      itemsTable: this.items || [],
+      vendedor_id: ""
+    };
+  },
+  methods: {
+    carregaItems: function carregaItems() {
+      var _this = this;
+
+      axios.get("/admin/vendas/vendedors/".concat(this.vendedor_id)).then(function (res) {
+        if (res.status == 200) _this.itemsTable = res.data;else _this.itemsTable = [];
+      })["catch"](function (e) {
+        alert(e);
+      });
+    }
+  },
+  computed: {
+    habilitaSearch: function habilitaSearch() {
+      if (this.search) return "display: flex";
+      return "display: none";
+    }
+  }
 });
 
 /***/ }),
@@ -37588,20 +37622,18 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container pb-3" }, [
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-primary",
-        attrs: {
-          type: "button",
-          "data-toggle": "modal",
-          "data-target": "#" + _vm.target
-        }
-      },
-      [_vm._v(_vm._s(_vm.name))]
-    )
-  ])
+  return _c(
+    "button",
+    {
+      staticClass: "btn btn-primary",
+      attrs: {
+        type: "button",
+        "data-toggle": "modal",
+        "data-target": "#" + _vm.target
+      }
+    },
+    [_vm._v(_vm._s(_vm.name))]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -37804,6 +37836,67 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row", style: _vm.habilitaSearch }, [
+      _c(
+        "div",
+        { staticClass: "col-3" },
+        [
+          _c("button-open-modal-component", {
+            attrs: { target: "adicionar", name: "Adicionar" }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col" }, [
+        _c("div", { staticClass: "input-group mb-3" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.vendedor_id,
+                expression: "vendedor_id"
+              }
+            ],
+            staticClass: "form-control",
+            staticStyle: { width: "auto", display: "inline" },
+            attrs: {
+              type: "text",
+              id: "search_vendedor_id",
+              name: "vendedor_id",
+              placeholder: "Insira a ID de um vendedor..."
+            },
+            domProps: { value: _vm.vendedor_id },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.vendedor_id = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-group-append" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary input-group-text",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.carregaItems()
+                  }
+                }
+              },
+              [_vm._v("Buscar")]
+            )
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
     _c("table", { staticClass: "table table-striped" }, [
       _c("thead", [
         _c(
@@ -37819,7 +37912,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "tbody",
-        _vm._l(_vm.items, function(item) {
+        _vm._l(_vm.itemsTable, function(item) {
           return _c(
             "tr",
             { key: item.ID },
@@ -50494,8 +50587,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\matheuscabral\Documents\GitHub\test1\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\matheuscabral\Documents\GitHub\test1\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Matt\Documents\GitHub\test1\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Matt\Documents\GitHub\test1\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
