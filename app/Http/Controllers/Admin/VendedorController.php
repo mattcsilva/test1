@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use \App\Venda;
+
 class VendedorController extends Controller
 {
     /**
@@ -14,18 +16,17 @@ class VendedorController extends Controller
      */
     public function index()
     {
-        $COMISSAO = 8.5;
-
         $data = \App\Vendedor::select('id', 'nome', 'email')->get();
 
-        foreach ($data as $key => $value) {
+        foreach ($data as $key => $value)
+        {
+            $data[$key]['comissao'] = 0;
+            $search_venda = Venda::where('vendedor_id', $value->id)->get();
 
-            $search_venda = \App\Venda::find($value->id);
-
-            if($search_venda)
-                $data[$key]['comissao'] = round($search_venda->valor * $COMISSAO / 100, 2);
-            else
-                $data[$key]['comissao'] = 0;
+            foreach ($search_venda as $v)
+            {
+                $data[$key]['comissao'] += round($v->valor * app('App\Venda')->getComissao() / 100, 2);
+            }
         }
         
         return view('admin.vendedors.index', compact('data'));

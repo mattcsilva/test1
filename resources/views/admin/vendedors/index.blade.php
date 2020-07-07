@@ -3,9 +3,11 @@
 @section('content')
 
     @if($errors->all())
-        @foreach ($errors->all() as $item)
-            <li>{{$item}}</li>
-        @endforeach
+        <div class="text-center">
+            @foreach ($errors->all() as $item)
+                <li>{{$item}}</li>
+            @endforeach
+        </div>
     @endif
     
     <button-open-modal-component
@@ -18,7 +20,7 @@
         v-bind:items="{{$data}}">
     </table-component>
 
-    <modal-component id="adicionar" title="Adicionar">
+    <modal-component id="adicionar" title="Vendedor">
 
         <form-component id="formAdicionar" url="{{ route('vendedors.store') }}" token="{{csrf_token()}}">
             <div class="form-group">

@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container pb-3">
         <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#' + target">{{name}}</button>
     </div>
 </template>

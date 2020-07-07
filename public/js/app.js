@@ -37588,7 +37588,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
+  return _c("div", { staticClass: "container pb-3" }, [
     _c(
       "button",
       {
@@ -37675,7 +37675,13 @@ var render = function() {
   return _c(
     "form",
     {
-      attrs: { action: _vm.url, method: "post", id: _vm.id, token: _vm.token }
+      attrs: {
+        action: _vm.url,
+        method: "post",
+        id: _vm.id,
+        token: _vm.token,
+        enctype: ""
+      }
     },
     [
       _c("input", {
@@ -50072,7 +50078,10 @@ files.keys().map(function (key) {
  */
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  mounted: function mounted() {
+    document.getElementById("app").style.display = "block";
+  }
 });
 
 /***/ }),

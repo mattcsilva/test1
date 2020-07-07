@@ -16,20 +16,25 @@ class VendaController extends Controller
      */
     public function index()
     {
-        $lista = [];
-        $data = Venda::select('id', 'valor', 'created_at', 'vendedor_id')->get();
+        $data = [];
+        $lista = Venda::select('id', 'valor', 'created_at', 'vendedor_id')->get();
 
-        foreach ($data as $key => $value) {
+        foreach ($lista as $key => $value)
+        {
             $vendedor = \App\Vendedor::find($value->vendedor_id);
 
-            $obj = new stdClass;
-            $obj['id'] = $vendedor->id;
-            $obj['nome'] = $vendedor->nome;
-            $obj['email'] = $vendedor->email;
-            $obj['comissao'] = 0;
-            $obj['valor'] = $data[$key]['valor'];
-            $obj['data'] = $data[$key]['created_at'];
+            $obj = new \stdClass;
+            $obj->id = $value->id;
+            $obj->nome = $vendedor->nome;
+            $obj->email = $vendedor->email;
+            $obj->comissao = round($value->valor * app('App\Venda')->getComissao() / 100, 2);
+            $obj->valor = $value->valor;
+            $obj->data = $value->created_at;
+
+            array_push($data, $obj);
         }
+
+        $data = json_encode($data);
 
         return view('admin.vendas.index', compact('data'));
     }
@@ -54,13 +59,22 @@ class VendaController extends Controller
     {
         $data = $request->all();
 
+        /*$existsVendedor = \App\Vendedor::find($data['vendedor_id']);
+        if(!$existsVendedor)
+        {
+            $data['vendedor_id'] = false;
+        }*/
+
         $validator = \Validator::make($data, [
-            "vendedor_id" => "required",
+            "vendedor_id" => [
+                "required",
+                'exists:vendedors,id'
+            ],
             "valor" => "required"
         ]);
 
         if($validator->fails()) {
-            return redirect()->back()->withErros($validator);
+            return redirect()->back()->withErrors($validator);
         }
 
         \App\Venda::create($data);
