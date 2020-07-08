@@ -29,6 +29,9 @@
                 <a class="navbar-brand" href="{{ route('vendas.index') }}">
                     Venda
                 </a>
+                <a class="navbar-brand" href="{{ url('/send-mail') }}">
+                    Enviar relatório
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>

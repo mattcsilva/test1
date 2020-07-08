@@ -39,12 +39,6 @@ class VendaController extends Controller
     {
         $data = $request->all();
 
-        /*$existsVendedor = \App\Vendedor::find($data['vendedor_id']);
-        if(!$existsVendedor)
-        {
-            $data['vendedor_id'] = false;
-        }*/
-
         $validator = \Validator::make($data, [
             "vendedor_id" => [
                 "required",
