@@ -9,6 +9,12 @@
             @endforeach
         </div>
     @endif
+
+    @if (session('status'))
+        <div class="text-center alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
     
     <div class="container pb-3">
         <button-open-modal-component

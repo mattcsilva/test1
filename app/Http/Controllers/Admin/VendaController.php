@@ -37,8 +37,10 @@ class VendaController extends Controller
      */
     public function store(Request $request)
     {
+        // Retorna todas as props
         $data = $request->all();
 
+        // Valida campos
         $validator = \Validator::make($data, [
             "vendedor_id" => [
                 "required",
@@ -47,13 +49,28 @@ class VendaController extends Controller
             "valor" => "required"
         ]);
 
+        // Caso alguma prop invalida retorna a pagina com erros encontrados
         if($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
 
-        Venda::create($data);
+        // Insere
+        $create = Venda::create($data);
 
-        return redirect()->back();
+        // Busca informações
+        $vendedor = \App\Vendedor::find($create->vendedor_id);
+
+        // Retorna objeto com as props desejadas
+        $retorno = new \stdClass;
+        $retorno->id = $create->id;
+        $retorno->nome = $vendedor->nome;
+        $retorno->email = $vendedor->email;
+        $retorno->comissao = $create->valor * 8.5 / 100;
+        $retorno->valor = $create->valor;
+        $retorno->data = $create->created_at;
+
+        // Retorna para a mesma view com as informacoes personalizadas dessa insercao
+        return redirect()->back()->with('status', json_encode($retorno));
     }
 
     /**
@@ -111,7 +128,10 @@ class VendaController extends Controller
     {
         $data = [];
         
+        // Busca informacoes do vendedor
         $vendedor = \App\Vendedor::find($vendedor_id);
+
+        // Busca vendas do vendedor informado
         $vendas = Venda::where('vendedor_id', $vendedor_id)->get();        
 
         foreach ($vendas as $key => $value)

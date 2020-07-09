@@ -10,6 +10,12 @@
         </div>
     @endif
 
+    @if (session('status'))
+        <div class="text-center alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
+
     <table-component
         :cols="['ID', 'Nome', 'E-mail', 'Comissão', 'Valor venda', 'Data venda']"
         :search="true">

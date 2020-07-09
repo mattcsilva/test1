@@ -16,15 +16,19 @@ class VendedorController extends Controller
      */
     public function index()
     {
+        // Busca todos os vendedores
         $data = \App\Vendedor::select('id', 'nome', 'email')->get();
 
         foreach ($data as $key => $value)
         {
             $data[$key]['comissao'] = 0;
+
+            // Busca venda do vendedor atual do FOR
             $search_venda = Venda::where('vendedor_id', $value->id)->get();
 
             foreach ($search_venda as $v)
             {
+                // Calculado comissao de cada vendedor
                 $data[$key]['comissao'] += round($v->valor * app('App\Venda')->getComissao() / 100, 2);
             }
         }
@@ -50,20 +54,30 @@ class VendedorController extends Controller
      */
     public function store(Request $request)
     {
+        // Retorna todas as props
         $data = $request->all();
 
+        // Valida campos
         $validator = \Validator::make($data, [
             "nome" => "required",
             "email" => 'required'
         ]);
 
+        // Caso alguma prop invalida retorna a pagina com erros encontrados
         if($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
 
-        \App\Vendedor::create($data);
+        // Insere
+        $create =\App\Vendedor::create($data);
 
-        return redirect()->back();
+        // Retorna objeto com as props desejadas
+        $retorno = new \stdClass;
+        $retorno->id = $create->id;
+        $retorno->nome = $create->nome;
+        $retorno->email = $create->email;
+
+        return redirect()->back()->with('status', json_encode($retorno));
     }
 
     /**
