@@ -1969,7 +1969,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['id', 'url', 'token']
+  props: ['id', 'url', 'token', 'method'],
+  computed: {
+    getMethod: function getMethod() {
+      return this.method || "post";
+    }
+  }
 });
 
 /***/ }),
@@ -37709,7 +37714,7 @@ var render = function() {
     {
       attrs: {
         action: _vm.url,
-        method: "post",
+        method: _vm.getMethod,
         id: _vm.id,
         token: _vm.token,
         enctype: ""
@@ -37717,7 +37722,8 @@ var render = function() {
     },
     [
       _c("input", {
-        attrs: { type: "hidden", name: "_method", value: "post" }
+        attrs: { type: "hidden", name: "_method" },
+        domProps: { value: _vm.getMethod }
       }),
       _vm._v(" "),
       _vm.token

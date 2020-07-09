@@ -100,4 +100,35 @@ class VendaController extends Controller
     {
         //
     }
+
+    /**
+     * Show vendas de um vendedor
+     * 
+     * @param int $vendedor_id
+     * @return array
+     */
+    public function show_vendas($vendedor_id)
+    {
+        $data = [];
+        
+        $vendedor = \App\Vendedor::find($vendedor_id);
+        $vendas = Venda::where('vendedor_id', $vendedor_id)->get();        
+
+        foreach ($vendas as $key => $value)
+        {
+            $obj = new \stdClass;
+            $obj->id = $value->id;
+            $obj->nome = $vendedor->nome;
+            $obj->email = $vendedor->email;
+            $obj->comissao = round($value->valor * app('App\Venda')->getComissao() / 100, 2);
+            $obj->valor = $value->valor;
+            $obj->data = $value->created_at;
+
+            array_push($data, $obj);
+        }
+
+        $data = json_encode($data);
+
+        return $data;
+    }
 }
