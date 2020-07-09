@@ -21,7 +21,11 @@ composer install
 # Configurar variáveis de ambiente
 ren .env.example .env
 php artisan key:generate
+```
 
+***Configurar variáveis do Mail***
+
+``` bash
 # Criar banco de dados
 php artisan db:create
 
